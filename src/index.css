@@ -4,9 +4,45 @@
 }
 
 body {
-    background-color: pink;
+    background-color: white;
 }
 
 .component-one {
     color : blue;
+}
+
+form input,select{
+    outline: none;
+    border: none; 
+    width: 300px;
+}
+
+form label,input, select {
+    background-color: rgb(206, 202, 202);
+    padding: 10px;
+}
+
+form select {
+    width: 330px;
+    background-color: rgb(206, 202, 202);
+}
+
+.input-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 200px;
+}
+
+.form-element {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-ele {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-left: 340px;
 }
