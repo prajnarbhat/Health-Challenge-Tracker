@@ -1,5 +1,7 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { useState } from "react";
+import TableData from "./TableData";
+
 const Home = () => {
 
     // Pass all the form details to an object and store it in localStorage
@@ -60,7 +62,9 @@ const Home = () => {
                 <br></br>
                 <button className="btn" type="submit" style={{ marginLeft: "340px"}}> Add Workout </button>
             </form>
-            
+            <div>
+                <TableData data={data}/>
+            </div>
         </>
     )
 }
