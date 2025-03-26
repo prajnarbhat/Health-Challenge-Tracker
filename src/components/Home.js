@@ -23,6 +23,8 @@ const Home = () => {
                         <input type="number"/>
                 </div>
                 </div>
+                <br></br>
+                <button className="btn" type="submit" style={{ marginLeft: "340px"}}> Add Workout </button>
             </form>
             
         </>
