@@ -15,18 +15,41 @@ const Home = () => {
     const handleSubmit = (e) =>{
         e.preventDefault();
 
-        const userData = {
-            id: Date.now(), // Unique ID
-            userName: userName,
+        const newWorkout = {
             workoutType: workoutType,
-            workoutMin: workoutMin
+            workoutMin: workoutMin,
         }
 
-        // We have an arrayOf object data and a new object is appended to the array creating a new array
-        // Important: Using spread operator it creates a new array contains all previous entries plus append the data to the array
-        const updatedUserData = [...data, userData];
-        console.log("Updated user Data:", updatedUserData);
-        setData(updatedUserData);
+        // we get an object where we need to push everytime to the array
+
+        // Check if the userName already existed in array using findIndex
+        // findIndex returns the index of the first element in the array that satisfies the provided testing function
+
+        const existingIndex = data.findIndex((item) => item.userName == userName);
+
+        console.log("existingIndex:", existingIndex);
+        // if it returns -1 then there is no data in the array where userName is equal to the input now
+
+        let updatedData;
+        if(existingIndex !== -1){
+            // if it returns -1 then we push the new data to the array
+
+            updatedData = [...data];
+            console.log("Updated data here is:", updatedData);
+            updatedData[existingIndex].workouts.push(newWorkout)
+        }
+        else {
+            // if it returns a number then we update the existing data
+            // craete a new array append that to existing array
+            const newUser = {
+                userName: userName,
+                workouts: [newWorkout]
+            };
+            updatedData = [...data, newUser];
+        }
+
+        console.log("Updated data:", updatedData);
+        setData(updatedData);
 
         setName("");
         setWorkoutType("");
@@ -47,6 +70,7 @@ const Home = () => {
                 <div className="form-element">
                     <label> Workout Type: </label>
                     <select value={workoutType} onChange={(e) => setWorkoutType(e.target.value)} required>
+                        <option value="">Select Workout</option>
                         <option value="Cycling">Cycling</option>
                         <option value="Running">Running</option>
                         <option value="Yoga">Yoga</option>
