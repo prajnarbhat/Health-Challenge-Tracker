@@ -14,9 +14,6 @@ const TableData = (props) => {
     })
    console.log("array of wtypes:", arrayWType.join(","));
 
-   
-
-    
 
 
     const tableRows = (
@@ -26,7 +23,9 @@ const TableData = (props) => {
                     <td> {info.userName} </td>
                     <td> {info.workouts.map(item => item.workoutType).join(", ")}</td>
                     <td> {info.workouts.map(item => { return  item.workout }).length} </td>
-                    <td> {info.workouts.map(item => item.workoutMin).join(", ")}</td>
+                    <td> {info.workouts.map(item => item.workoutMin).reduce((acc,item) => {
+                        return acc + parseInt(item)
+                    },0)}</td>
                 </tr>
             ))
         ) 
