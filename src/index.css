@@ -74,3 +74,15 @@ form select {
 .btn:hover {
     background-color: rgb(154, 154, 224);
 }
+
+.table-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex
+;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    width: 100%;
+}

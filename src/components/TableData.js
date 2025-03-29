@@ -1,3 +1,4 @@
+
 const TableData = (props) => {
     console.log("Array of data:", props.data);
 
@@ -33,7 +34,7 @@ const TableData = (props) => {
 
     return (
         <>
-            <h3> Table data </h3>
+            
             <table border="1">
                 <thead>
                     <tr>
