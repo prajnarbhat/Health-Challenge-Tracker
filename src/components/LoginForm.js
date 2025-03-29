@@ -15,50 +15,43 @@ const LoginForm = () => {
     // https://usehooks.com/uselocalstorage
     const [ data, setData] = useLocalStorage("userInfo", []);
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = (e) => {
         e.preventDefault();
-
+    
         const newWorkout = {
-            workoutType: workoutType,
-            workoutMin: workoutMin,
-        }
+            workoutType,
+            workoutMin,
+        };
+    
+        const updatedData = [...data].reduce((acc,item) => {
+            // First adding the newWorkout to workouts
+            // workout that needs to be added is a m array
+            // [{...item.workout,newWorkout}]
+            // adding newWorkout object to the array which is present inside workouts
+            // now need to push this to individual object item
+            // {...item, workouts: [...item.workout, newWorkout]}
+            // now pass this to array acc
+            // [...acc, {...item, workouts: [...item.workout, newWorkout]}]
+            // this perform only if the userName is already present in array
+            if (item.userName == userName) {
+                return [...acc, {...item, workouts: [...item.workouts, newWorkout]}];
+            }
+            return [...acc,item]
+        },[])
 
-        // we get an object where we need to push everytime to the array
-
-        // Check if the userName already existed in array using findIndex
-        // findIndex returns the index of the first element in the array that satisfies the provided testing function
-
-        const existingIndex = data.findIndex((item) => item.userName == userName);
-
-        console.log("existingIndex:", existingIndex);
-        // if it returns -1 then there is no data in the array where userName is equal to the input now
-
-        let updatedData;
-        if(existingIndex !== -1){
-            // if it returns -1 then we push the new data to the array
-
-            updatedData = [...data];
-            console.log("Updated data here is:", updatedData);
-            updatedData[existingIndex].workouts.push(newWorkout)
-        }
-        else {
-            // if it returns a number then we update the existing data
-            // craete a new array append that to existing array
-            const newUser = {
-                userName: userName,
-                workouts: [newWorkout]
-            };
-            updatedData = [...data, newUser];
+        if(!data.some(item => item.userName == userName)) {
+            // if the user is not present in array then create a new user with userName and new array workout
+            updatedData.push({userName: userName,workouts:[newWorkout]})
         }
 
         console.log("Updated data:", updatedData);
         setData(updatedData);
-
+    
         setName("");
         setWorkoutType("");
         setWorkoutMin("");
-
-    }
+    };
+    
 
 
     return (
@@ -66,13 +59,13 @@ const LoginForm = () => {
             <form className="input-form" onSubmit={handleSubmit}>
                 <div className="form-element" style={{marginLeft: "340px"}}>
                     <label>User Name: </label> 
-                    <input type="text" name="name" value={userName} onChange={(e) => setName(e.target.value)} required/>
+                    <input type="text" name="name" value={userName} onChange={(e) => setName(e.target.value.trim())} required/>
                 </div>
                 <br></br>
                 <div className="form-ele">
                 <div className="form-element">
                     <label> Workout Type: </label>
-                    <select value={workoutType} onChange={(e) => setWorkoutType(e.target.value)} required>
+                    <select value={workoutType} onChange={(e) => setWorkoutType(e.target.value.trim())} required>
                         <option value="">Select Workout</option>
                         <option value="Cycling">Cycling</option>
                         <option value="Running">Running</option>
@@ -83,11 +76,11 @@ const LoginForm = () => {
                 <br></br>
                 <div className="form-element">
                     <label> Workout Minutes: </label>
-                        <input type="number" name="min" value={workoutMin} onChange={(e) => setWorkoutMin(e.target.value)} required/>
+                        <input type="number" name="min" value={workoutMin} onChange={(e) => setWorkoutMin(e.target.value.trim())} required/>
                 </div>
                 </div>
                 <br></br>
-                <button className="btn" type="submit" style={{ marginLeft: "340px"}} onClick={() =>navigate("/home")}>Click me!</button>
+                <button className="btn" type="submit" style={{ marginLeft: "340px"}} >Click me!</button>
             </form>
             <div className="table-data">
                 <TableData data={data}/>
@@ -97,3 +90,4 @@ const LoginForm = () => {
 }
 
 export default LoginForm;
+

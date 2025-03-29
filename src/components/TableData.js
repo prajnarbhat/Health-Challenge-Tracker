@@ -1,56 +1,58 @@
+const TableData = ({ data }) => {
+    console.log("Array of data:", data);
 
-const TableData = (props) => {
-    console.log("Array of data:", props.data);
+    // Function to merge workout minutes if the same type exists
+    const mergeWorkoutMinutes = (workouts) => {
+        return workouts.reduce((acc, workout) => {
+            const existingWorkout = acc.find(w => w.workoutType === workout.workoutType);
 
-    //const [ arrayWorkoutType, setWtype] = useState([])
+            if (existingWorkout) {
+                // Ensure workoutMin is treated as a number to prevent string concatenation
+                existingWorkout.workoutMin += Number(workout.workoutMin);
+            } else {
+                // Convert workoutMin to a number before adding it
+                acc.push({ ...workout, workoutMin: Number(workout.workoutMin) });
+            }
 
-    const arrayOfUserData = props.data;
+            return acc;
+        }, []);
+    };
 
-    const arrayOfWorkout = arrayOfUserData.flatMap(user => {
-        return user.workouts;
-    })
-    console.log("Array of wtype:",arrayOfWorkout);
-    const arrayWType = arrayOfWorkout.map(item => {
-        return item.workoutType;
-    })
-   console.log("array of wtypes:", arrayWType.join(","));
+    const tableRows = data.length > 0 ? (
+        data.map((user, index) => {
+            const mergedWorkouts = mergeWorkoutMinutes(user.workouts);
 
-
-
-    const tableRows = (
-        arrayOfUserData.length > 0 && (
-            arrayOfUserData.map((info, index) => (
-                <tr key={info.index}>
-                    <td> {info.userName} </td>
-                    <td> {info.workouts.map(item => item.workoutType).join(", ")}</td>
-                    <td> {info.workouts.map(item => { return  item.workout }).length} </td>
-                    <td> {info.workouts.map(item => item.workoutMin).reduce((acc,item) => {
-                        return acc + parseInt(item)
-                    },0)}</td>
+            return (
+                <tr key={index}>
+                    <td>{user.userName}</td>
+                    <td>{mergedWorkouts.map(workout => workout.workoutType).join(", ")}</td>
+                    <td>{mergedWorkouts.length}</td>
+                    <td>{mergedWorkouts.reduce((total, workout) => total + Number(workout.workoutMin), 0)}</td> 
                 </tr>
-            ))
-        ) 
-    )
+            );
+        })
+    ) : (
+        <tr>
+            <td colSpan="4" style={{ textAlign: "center" }}>No data available</td>
+        </tr>
+    );
 
     return (
         <>
-            
+            <h2>Workout Data</h2>
             <table border="1">
                 <thead>
                     <tr>
-                        <th> UserName </th>
-                        <th> WorkoutType </th>
-                        <th> Number of Workout</th>
-                        <th> WorkoutMinute </th>
+                        <th>User Name</th>
+                        <th>Workout Type</th>
+                        <th>Number of Workouts</th>
+                        <th>Total Workout Minutes</th>
                     </tr>
                 </thead>
-                <tbody>
-                   {tableRows}
-                </tbody>
+                <tbody>{tableRows}</tbody>
             </table>
         </>
-
-    )
-}
+    );
+};
 
 export default TableData;
