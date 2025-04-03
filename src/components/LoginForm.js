@@ -1,7 +1,6 @@
-import { useLocalStorage } from "@uidotdev/usehooks";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import TableData from "./TableData";
+import { DataContext } from "./DataContext";
 
 const LoginForm = () => {
 
@@ -13,7 +12,7 @@ const LoginForm = () => {
     const navigate = useNavigate();
 
     // https://usehooks.com/uselocalstorage
-    const [ data, setData] = useLocalStorage("userInfo", []);
+    const { data, setData} = useContext(DataContext)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -50,6 +49,8 @@ const LoginForm = () => {
         setName("");
         setWorkoutType("");
         setWorkoutMin("");
+
+        navigate("/TableData");
     };
     
 
@@ -82,9 +83,9 @@ const LoginForm = () => {
                 <br></br>
                 <button className="btn" type="submit" style={{ marginLeft: "340px"}} >Click me!</button>
             </form>
-            <div className="table-data">
+            {/* <div className="table-data">
                 <TableData data={data}/>
-            </div>
+            </div> */}
         </>
     )
 }

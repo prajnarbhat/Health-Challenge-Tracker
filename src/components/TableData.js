@@ -1,9 +1,16 @@
-const TableData = (props) => {
-    console.log("Data fetched in table:",props.data)
+import { useContext, useState } from "react";
+import { DataContext } from "./DataContext";
+
+const TableData = () => {
+   // console.log("Data fetched in table:",props.data)
     /* 1: userName: "Prajna R Bhat"workouts: Array(7)0: 
 {workoutType: 'Running', workoutMin: '23222'}1: {workoutType: 'Yoga', workoutMin: '452'}2: {workoutType: 'Yoga', workoutMin: '452'}
 */
-    const arrayOfUserData = props.data;
+    const { data } = useContext(DataContext)
+    console.log("Data in table:",data)
+    const arrayOfUserData =  data;
+
+    const [page, setPage] = useState(1);
 
     const mergeWorkoutMin = (workoutdata) =>{
         //console.log("data here:", workoutdata);
@@ -31,13 +38,13 @@ const TableData = (props) => {
         },[])
     )}
 
-    const tableRows =  arrayOfUserData.map(userinfo => {
+    const tableRows =  arrayOfUserData.slice(page*5 - 5, page*5).map((userinfo,index) => {
 
         const duplicateWorkoutType = mergeWorkoutMin(userinfo.workouts)
 
         console.log(duplicateWorkoutType)
         return (
-            <tr>
+            <tr key={index}>
                 <td>{userinfo.userName}</td>
                 <td>{duplicateWorkoutType.map(workout => (
                     workout.workoutType
@@ -66,6 +73,20 @@ const TableData = (props) => {
             </tbody>
 
         </table>
+
+        
+
+        {arrayOfUserData.length > 0 && <div class="pagination">
+            
+
+            {[...Array(arrayOfUserData.length/5)].map((_dirname,i) => (
+                <span>
+                    {i+1}
+                </span>
+            ))}
+
+           
+            </div>}
     </>
    )
 
