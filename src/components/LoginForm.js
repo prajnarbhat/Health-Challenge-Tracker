@@ -3,92 +3,87 @@ import { useNavigate } from "react-router-dom";
 import { DataContext } from "./DataContext";
 
 const LoginForm = () => {
-
-    // Pass all the form details to an object and store it in localStorage
-    const [userName, setName] = useState("")
-    const [workoutType, setWorkoutType] = useState("")
-    const [workoutMin, setWorkoutMin] = useState("")
+    const [userName, setName] = useState("");
+    const [workoutType, setWorkoutType] = useState("");
+    const [workoutMin, setWorkoutMin] = useState("");
 
     const navigate = useNavigate();
+    const { data, setData } = useContext(DataContext);
 
-    // https://usehooks.com/uselocalstorage
-    const { data, setData} = useContext(DataContext)
+    // 🔹 Function to merge duplicate workout types
+    const mergeWorkoutMin = (workouts) => {
+        return workouts.reduce((acc, workout) => {
+            const existingWorkout = acc.find(w => w.workoutType === workout.workoutType);
+            if (existingWorkout) {
+                existingWorkout.workoutMin += Number(workout.workoutMin);
+            } else {
+                acc.push({ ...workout, workoutMin: Number(workout.workoutMin) });
+            }
+            return acc;
+        }, []);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    
-        const newWorkout = {
-            workoutType,
-            workoutMin,
-        };
-    
-        const updatedData = [...data].reduce((acc,item) => {
-            // First adding the newWorkout to workouts
-            // workout that needs to be added is a m array
-            // [{...item.workout,newWorkout}]
-            // adding newWorkout object to the array which is present inside workouts
-            // now need to push this to individual object item
-            // {...item, workouts: [...item.workout, newWorkout]}
-            // now pass this to array acc
-            // [...acc, {...item, workouts: [...item.workout, newWorkout]}]
-            // this perform only if the userName is already present in array
-            if (item.userName == userName) {
-                return [...acc, {...item, workouts: [...item.workouts, newWorkout]}];
-            }
-            return [...acc,item]
-        },[])
 
-        if(!data.some(item => item.userName == userName)) {
-            // if the user is not present in array then create a new user with userName and new array workout
-            updatedData.push({userName: userName,workouts:[newWorkout]})
+        const newWorkout = { workoutType, workoutMin: Number(workoutMin) };
+
+        let updatedData = data.map(user => {
+            if (user.userName === userName) {
+                // Merge new workout with existing workouts
+                const updatedWorkouts = mergeWorkoutMin([...user.workouts, newWorkout]);
+                return { ...user, workouts: updatedWorkouts };
+            }
+            return user;
+        });
+
+        // If user doesn't exist, add new user
+        if (!data.some(user => user.userName === userName)) {
+            updatedData.push({ userName, workouts: [newWorkout] });
         }
 
-        console.log("Updated data:", updatedData);
+        console.log("Updated Data:", updatedData);
         setData(updatedData);
-    
+
+        // Reset input fields
         setName("");
         setWorkoutType("");
         setWorkoutMin("");
 
+        // Navigate to TableData page
         navigate("/TableData");
     };
-    
-
 
     return (
         <>
             <form className="input-form" onSubmit={handleSubmit}>
-                <div className="form-element" style={{marginLeft: "340px"}}>
-                    <label>User Name: </label> 
-                    <input type="text" name="name" value={userName} onChange={(e) => setName(e.target.value.trim())} required/>
+                <div className="form-element" style={{ marginLeft: "340px" }}>
+                    <label>User Name: </label>
+                    <input type="text" name="name" value={userName} onChange={(e) => setName(e.target.value.trim())} required />
                 </div>
-                <br></br>
+                <br />
                 <div className="form-ele">
-                <div className="form-element">
-                    <label> Workout Type: </label>
-                    <select value={workoutType} onChange={(e) => setWorkoutType(e.target.value.trim())} required>
-                        <option value="">Select Workout</option>
-                        <option value="Cycling">Cycling</option>
-                        <option value="Running">Running</option>
-                        <option value="Yoga">Yoga</option>
-                        <option value="Swimming">Swimming</option>
-                    </select>
+                    <div className="form-element">
+                        <label> Workout Type: </label>
+                        <select value={workoutType} onChange={(e) => setWorkoutType(e.target.value.trim())} required>
+                            <option value="">Select Workout</option>
+                            <option value="Cycling">Cycling</option>
+                            <option value="Running">Running</option>
+                            <option value="Yoga">Yoga</option>
+                            <option value="Swimming">Swimming</option>
+                        </select>
+                    </div>
+                    <br />
+                    <div className="form-element">
+                        <label> Workout Minutes: </label>
+                        <input type="number" name="min" value={workoutMin} onChange={(e) => setWorkoutMin(e.target.value)} required />
+                    </div>
                 </div>
-                <br></br>
-                <div className="form-element">
-                    <label> Workout Minutes: </label>
-                        <input type="number" name="min" value={workoutMin} onChange={(e) => setWorkoutMin(e.target.value.trim())} required/>
-                </div>
-                </div>
-                <br></br>
-                <button className="btn" type="submit" style={{ marginLeft: "340px"}} >Click me!</button>
+                <br />
+                <button className="btn" type="submit" style={{ marginLeft: "340px" }}>Click me!</button>
             </form>
-            {/* <div className="table-data">
-                <TableData data={data}/>
-            </div> */}
         </>
-    )
-}
+    );
+};
 
 export default LoginForm;
-

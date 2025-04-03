@@ -86,3 +86,52 @@ form select {
     padding: 30px;
     width: 100%;
 }
+
+.pagination {
+    display: flex;
+    padding: 15px;
+    justify-content: center;
+    cursor: pointer;
+    
+  }
+
+  .pagination > span {
+    padding: 10px;
+    border: 1px solid gray;
+    text-decoration: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;  
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+  .pagination > span a {
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .pagination > span  a:hover {
+    background: #b7c5d3;
+    color: black;
+  }
+  
+  .pagination > span .previous {
+    background-color: #f1f1f1;
+    color: black;
+    border: none;
+    width: 70px;
+  }
+  
+  .pagination > span .next{
+    background-color: #f1f1f1;
+    color: black;
+    border: none;
+    width: 70px;
+  }
+
+  .pagination-selected {
+    background: #b7c5d3;
+  }
+
+  .pagination_disabled {
+    opacity: 0;
+ }
