@@ -1,114 +1,150 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DataContext } from "./DataContext";
 
 const TableData = () => {
     const { data } = useContext(DataContext);
     const [page, setPage] = useState(1);
-    let [searchText, setSearchtext] = useState("")
+    const [searchText, setSearchtext] = useState("");
+    const [workoutValue, setWorkoutvalue] = useState("");
+    const [userData, setData] = useState([]);
+
     const itemsPerPage = 5;
-
-    const paginatedData = data.slice((page - 1) * itemsPerPage, page * itemsPerPage);
-
-    const [userData, setData] = useState(paginatedData)
-
-    const [workoutValue, setWorkoutvalue] = useState('')
-
-    const workoutData = [ "Cycling", "Running", "Yoga", "Swimming" ];
+    const workoutData = ["Cycling", "Running", "Yoga", "Swimming"];
 
     const setPageHandler = (selectedPage) => {
-        if( selectedPage >= 1 && selectedPage <= Math.ceil(data.length/itemsPerPage) && selectedPage !== page )
-        setPage(selectedPage)
-    }
+        if (
+            selectedPage >= 1 &&
+            selectedPage <= Math.ceil(userData.length / itemsPerPage) &&
+            selectedPage !== page
+        ) {
+            setPage(selectedPage);
+        }
+    };
 
-    const setSearchhandler = (e) => {
-        searchText = e.target.value;
-        setSearchtext(searchText)
+    // Filter by userName
+    const applyNameFilter = (users) => {
+        if (!searchText) return [];
+        return users.filter(user =>
+            user.userName.toLowerCase().includes(searchText.toLowerCase())
+        );
+    };
 
-        const filterDataWithNames = paginatedData.filter(item => {
-            return item.userName.toLowerCase().includes(searchText.toLowerCase());
-        })
-
-        setData(filterDataWithNames)
-        
-    }
-
-    const displayWorkoutTypes = (e) => {
-        const value = e.target.value;
-        setWorkoutvalue(value)
-
-        const getWorkoutType = paginatedData.map(item =>
-            item.workouts.map(wtype => 
-                wtype.workoutType
-            ).join(",")
-        ).join(",")
-        console.log(getWorkoutType)
-
-        const arrayOfWorkoutType = getWorkoutType.split(',')
-        console.log(arrayOfWorkoutType)
-
-        const filterDataWithWorkoutType = paginatedData.filter(item =>
-            item.workouts.some(wtype =>
-                wtype.workoutType.toLowerCase().includes(value.toLowerCase())
+    // Filter by workoutType
+    const applyWorkoutFilter = (users) => {
+        if (!workoutValue) return [];
+        return users.filter(user =>
+            user.workouts.some(workout =>
+                workout.workoutType.toLowerCase().includes(workoutValue.toLowerCase())
             )
         );
+    };
 
-        console.log(filterDataWithWorkoutType)
-        setData(filterDataWithWorkoutType)
+    useEffect(() => {
+        let result = [...data];
 
-        setWorkoutvalue("")
+        const filteredByName = applyNameFilter(result);
+        const filteredByWorkout = applyWorkoutFilter(result);
 
- 
-    }
+        // Combine both filters using OR logic and remove duplicates
+        const filteredData = [...new Set([...filteredByName, ...filteredByWorkout])];
 
-    
+        // If no filters applied, show all
+        setData((searchText || workoutValue) ? filteredData : result);
+        setPage(1); // Reset to first page when filters change
+    }, [searchText, workoutValue, data]);
+
+    const paginatedData = userData.slice(
+        (page - 1) * itemsPerPage,
+        page * itemsPerPage
+    );
+
     return (
         <>
             <h2>Workout Summary</h2>
+
             <div>
-                <input type="text" value={searchText} onChange={setSearchhandler}/>
+                <input
+                    type="search"
+                    placeholder="Search by name"
+                    value={searchText}
+                    onChange={(e) => setSearchtext(e.target.value)}
+                />
             </div>
+
             <div>
-                <input list="data" onChange={(e) => displayWorkoutTypes(e)}/>
-                <datalist id="data">
-                    {workoutData.map(wdata => <option> {wdata} </option>)}
-                </datalist>
-                
+                <select
+                    value={workoutValue}
+                    onChange={(e) => setWorkoutvalue(e.target.value)}
+                >
+                    <option value="">Select a workout Type</option>
+                    {workoutData.map((wdata, index) => (
+                        <option key={index} value={wdata}>
+                            {wdata}
+                        </option>
+                    ))}
+                </select>
             </div>
+
             <table border="1">
                 <thead>
                     <tr>
-                        <th> User Name </th>
-                        <th> Workout Type </th>
-                        <th> Number of Workouts </th>
-                        <th> Total Workout Min </th>
+                        <th>User Name</th>
+                        <th>Workout Type</th>
+                        <th>Number of Workouts</th>
+                        <th>Total Workout Min</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {userData.map((user, index) => (
-                        <tr key={index}>
-                            <td>{user.userName}</td>
-                            <td>{user.workouts.map(w => w.workoutType).join(", ")}</td>
-                            <td>{user.workouts.length}</td>
-                            <td>{user.workouts.reduce((acc, w) => acc + w.workoutMin, 0)}</td>
+                    {paginatedData.length > 0 ? (
+                        paginatedData.map((user, index) => (
+                            <tr key={index}>
+                                <td>{user.userName}</td>
+                                <td>{user.workouts.map(w => w.workoutType).join(", ")}</td>
+                                <td>{user.workouts.length}</td>
+                                <td>{user.workouts.reduce((acc, w) => acc + w.workoutMin, 0)}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan="4">No matching data</td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
 
-            {data.length > 0 && (<div className="pagination">
+            {userData.length > itemsPerPage && (
+                <div className="pagination">
+                    <span
+                        className={page > 1 ? "" : "pagination_disabled"}
+                        onClick={() => setPageHandler(page - 1)}
+                    >
+                        <button className="previous">&laquo; Previous</button>
+                    </span>
 
-                <span className={page > 1 ? "" : "pagination_disabled"}  onClick={() => setPageHandler(page-1)}><button className="previous">
-                        &laquo; Previous
-                    </button></span>
-                {[...Array(Math.ceil(data.length/itemsPerPage))].map((_dirname,index) => (
-                    <span className={page == index+1 ? "pagination-selected" : ""} onClick={() => setPageHandler(index+1)} > {index+1} </span>
-                    ))}
+                    {[...Array(Math.ceil(userData.length / itemsPerPage))].map(
+                        (_, index) => (
+                            <span
+                                key={index}
+                                className={page === index + 1 ? "pagination-selected" : ""}
+                                onClick={() => setPageHandler(index + 1)}
+                            >
+                                {index + 1}
+                            </span>
+                        )
+                    )}
 
-                <span  className={page < Math.ceil(data.length / itemsPerPage) ? "" : "pagination_disabled"} onClick={() => setPageHandler(page+1)}><button className="next"> Next &raquo;</button></span>
-                
-                </div>)} 
-
-            
+                    <span
+                        className={
+                            page < Math.ceil(userData.length / itemsPerPage)
+                                ? ""
+                                : "pagination_disabled"
+                        }
+                        onClick={() => setPageHandler(page + 1)}
+                    >
+                        <button className="next">Next &raquo;</button>
+                    </span>
+                </div>
+            )}
         </>
     );
 };
