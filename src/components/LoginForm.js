@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DataContext } from "./DataContext";
 
 const LoginForm = () => {
@@ -56,17 +56,18 @@ const LoginForm = () => {
 
     return (
         <>
+            <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
            <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
             <form className="space-y-6" onSubmit={handleSubmit}>
-                <div className="form-element" style={{ marginLeft: "340px" }}>
-                    <label>User Name: </label>
-                    <input type="text" name="name" value={userName} onChange={(e) => setName(e.target.value.trim())} required />
+            <h5 class="text-xl font-medium text-gray-900 dark:text-white"> Add User</h5>
+                <div className="form-element">
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User Name </label>
+                    <input type="text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" name="name" value={userName} onChange={(e) => setName(e.target.value.trim())} required />
                 </div>
-                <br />
-                <div className="form-ele">
-                    <div className="form-element">
-                        <label> Workout Type: </label>
-                        <select value={workoutType} onChange={(e) => setWorkoutType(e.target.value.trim())} required>
+
+                <div className="form-element">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Workout Type </label>
+                        <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" value={workoutType} onChange={(e) => setWorkoutType(e.target.value.trim())} required>
                             <option value="">Select Workout</option>
                             <option value="Cycling">Cycling</option>
                             <option value="Running">Running</option>
@@ -74,15 +75,24 @@ const LoginForm = () => {
                             <option value="Swimming">Swimming</option>
                         </select>
                     </div>
-                    <br />
-                    <div className="form-element">
-                        <label> Workout Minutes: </label>
-                        <input type="number" name="min" value={workoutMin} onChange={(e) => setWorkoutMin(e.target.value)} required />
+                   
+                <div className="form-element">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Workout Minutes </label>
+                        <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" type="number" name="min" value={workoutMin} onChange={(e) => setWorkoutMin(e.target.value)} required />
                     </div>
-                </div>
-                <br />
-                <button className="btn" type="submit" style={{ marginLeft: "340px" }}>Click me!</button>
+               
+                <button className="w-full text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="submit"> Submit </button>
             </form>
+            <div className="mt-4 text-center">
+            <span className="text-sm text-gray-600 dark:text-gray-300 mr-2">
+                Want to see all workouts?
+            </span>
+            <Link to="/TableData" className="text-blue-600 hover:underline dark:text-blue-400">
+                View Table
+            </Link>
+            </div>
+            </div>
+            
             </div>
         </>
     );

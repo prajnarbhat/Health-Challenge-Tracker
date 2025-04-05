@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { DataContext } from "./DataContext";
 
 
@@ -67,8 +68,12 @@ const TableData = () => {
                 <h2> User Progress </h2>
             </div>
             <div className="block m-5 p-6 bg-gray-200 border border-gray-100 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-            <div className="flex gap-x-8 m-4">
-                <input className="bg-white text-black-1000"
+            <div className="m-3">
+                <Link to="/" className="w-full text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> Add user </Link>
+            
+            </div>
+            <div className="flex gap-x-8 m-2">
+                <input className="bg-white text-black-1000 p-2"
                     type="search"
                     placeholder="Search by name"
                     value={searchText}
@@ -86,7 +91,7 @@ const TableData = () => {
                     ))}
                 </select>
             </div>
-            <div className="relative overflow-x-auto bg-gray-400">
+            <div className="relative overflow-x-auto bg-gray-400 m-2">
             <table border="1" className="w-full text-sm text-left rtl:text-right bg-white">
                 <thead className="uppercase dark:text-black-900">
                     <tr>
@@ -117,7 +122,7 @@ const TableData = () => {
             
 
             {userData.length > itemsPerPage && (
-                <div className="pagination bg-white">
+                <div className="pagination bg-white m-2">
                     <span
                         className={page > 1 ? "" : "pagination_disabled"}
                         onClick={() => setPageHandler(page - 1)}
