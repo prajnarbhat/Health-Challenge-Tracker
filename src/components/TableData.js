@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { DataContext } from "./DataContext";
 
+
 const TableData = () => {
     const { data } = useContext(DataContext);
     const [page, setPage] = useState(1);
@@ -60,19 +61,20 @@ const TableData = () => {
 
     return (
         <>
-            <h2>Workout Summary</h2>
-
-            <div>
-                <input
+            <div className="bg-gray-300 min-h-screen">
+            <div className="flex justify-around pt-5">
+                <h2> User table</h2>
+                <h2> User Progress </h2>
+            </div>
+            <div className="block m-5 p-6 bg-gray-200 border border-gray-100 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+            <div className="flex gap-x-8 m-4">
+                <input className="bg-white text-black-1000"
                     type="search"
                     placeholder="Search by name"
                     value={searchText}
                     onChange={(e) => setSearchtext(e.target.value)}
                 />
-            </div>
-
-            <div>
-                <select
+                <select className="bg-white text-black-1000"
                     value={workoutValue}
                     onChange={(e) => setWorkoutvalue(e.target.value)}
                 >
@@ -84,24 +86,24 @@ const TableData = () => {
                     ))}
                 </select>
             </div>
-
-            <table border="1">
-                <thead>
+            <div className="relative overflow-x-auto bg-gray-400">
+            <table border="1" className="w-full text-sm text-left rtl:text-right bg-white">
+                <thead className="uppercase dark:text-black-900">
                     <tr>
-                        <th>User Name</th>
-                        <th>Workout Type</th>
-                        <th>Number of Workouts</th>
-                        <th>Total Workout Min</th>
+                        <th scope="col" class="px-6 py-3">User Name</th>
+                        <th scope="col" class="px-6 py-3">Workout Type</th>
+                        <th scope="col" class="px-6 py-3">Number of Workouts</th>
+                        <th scope="col" class="px-6 py-3">Total Workout Min</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="relative overflow-x-auto w-100 divide-y divide-gray-300">
                     {paginatedData.length > 0 ? (
                         paginatedData.map((user, index) => (
                             <tr key={index}>
-                                <td>{user.userName}</td>
-                                <td>{user.workouts.map(w => w.workoutType).join(", ")}</td>
-                                <td>{user.workouts.length}</td>
-                                <td>{user.workouts.reduce((acc, w) => acc + w.workoutMin, 0)}</td>
+                                <td class="px-6 py-4">{user.userName}</td>
+                                <td class="px-6 py-4">{user.workouts.map(w => w.workoutType).join(", ")}</td>
+                                <td class="px-6 py-4">{user.workouts.length}</td>
+                                <td class="px-6 py-4">{user.workouts.reduce((acc, w) => acc + w.workoutMin, 0)}</td>
                             </tr>
                         ))
                     ) : (
@@ -111,9 +113,11 @@ const TableData = () => {
                     )}
                 </tbody>
             </table>
+            </div>
+            
 
             {userData.length > itemsPerPage && (
-                <div className="pagination">
+                <div className="pagination bg-white">
                     <span
                         className={page > 1 ? "" : "pagination_disabled"}
                         onClick={() => setPageHandler(page - 1)}
@@ -145,6 +149,8 @@ const TableData = () => {
                     </span>
                 </div>
             )}
+            </div>
+            </div>
         </>
     );
 };

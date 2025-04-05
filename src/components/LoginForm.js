@@ -56,7 +56,8 @@ const LoginForm = () => {
 
     return (
         <>
-            <form className="input-form" onSubmit={handleSubmit}>
+           <div className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+            <form className="space-y-6" onSubmit={handleSubmit}>
                 <div className="form-element" style={{ marginLeft: "340px" }}>
                     <label>User Name: </label>
                     <input type="text" name="name" value={userName} onChange={(e) => setName(e.target.value.trim())} required />
@@ -82,6 +83,7 @@ const LoginForm = () => {
                 <br />
                 <button className="btn" type="submit" style={{ marginLeft: "340px" }}>Click me!</button>
             </form>
+            </div>
         </>
     );
 };
