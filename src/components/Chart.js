@@ -29,9 +29,11 @@ const Chart = () => {
     };
 
     return (
-        <div className="flex flex-col md:flex-row gap-8 items-start justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+        <div className="block m-5 p-6 bg-gray-200 border border-gray-100 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <div className="flex flex-col md:flex-row gap-8 items-stretch justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+
             
-            <div className="bg-white dark:bg-gray-800 shadow-md border border-gray-200 dark:border-gray-700 rounded-xl p-4 w-full max-w-xs">
+        <div className="bg-white dark:bg-gray-800 shadow-md border border-gray-200 dark:border-gray-700 rounded-xl p-4 w-full max-w-xs h-full">
                 <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Select a User</h3>
                 <div className="space-y-2">
                     {data.map(user => (
@@ -46,7 +48,7 @@ const Chart = () => {
             </div>
 
             {selectedUser && (
-                <div className="bg-white dark:bg-gray-800 shadow-md border border-gray-200 dark:border-gray-700 rounded-xl p-6 w-full max-w-xl">
+                <div className="bg-white dark:bg-gray-800 shadow-md border border-gray-200 dark:border-gray-700 rounded-xl p-6 w-full max-w-xl h-full">
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                         Workout Chart for {selectedUser.userName}
                     </h3>
@@ -68,7 +70,7 @@ const Chart = () => {
                                 legend: {
                                     display: true,
                                     labels: {
-                                        color: '#374151', // dark gray
+                                        color: '#374151', 
                                     }
                                 },
                                 title: {
@@ -94,6 +96,7 @@ const Chart = () => {
                     />
                 </div>
             )}
+        </div>
         </div>
     );
 };
