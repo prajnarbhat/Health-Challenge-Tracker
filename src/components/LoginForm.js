@@ -10,7 +10,6 @@ const LoginForm = () => {
     const navigate = useNavigate();
     const { data, setData } = useContext(DataContext);
 
-    // 🔹 Function to merge duplicate workout types
     const mergeWorkoutMin = (workouts) => {
         return workouts.reduce((acc, workout) => {
             const existingWorkout = acc.find(w => w.workoutType === workout.workoutType);
