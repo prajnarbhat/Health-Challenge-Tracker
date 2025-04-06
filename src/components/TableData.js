@@ -65,7 +65,7 @@ const TableData = () => {
             <div className="bg-gray-300 min-h-screen">
             <div className="flex justify-around pt-5">
                 <h2> User table</h2>
-                <h2> User Progress </h2>
+                <button> <Link to="/chart"> User Progress  </Link></button>
             </div>
             <div className="block m-5 p-6 bg-gray-200 border border-gray-100 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <div className="m-3">
