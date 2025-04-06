@@ -64,8 +64,8 @@ const TableData = () => {
         <>
             <div className="bg-gray-300 min-h-screen">
             <div className="flex justify-around pt-5">
-                <h2> User table</h2>
-                <button> <Link to="/chart"> User Progress  </Link></button>
+                <button> <Link to="/TableData" className="w-full text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">User table</Link></button>
+                <button> <Link to="/chart" className="w-full text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> User Progress  </Link></button>
             </div>
             <div className="block m-5 p-6 bg-gray-200 border border-gray-100 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             <div className="m-3">
