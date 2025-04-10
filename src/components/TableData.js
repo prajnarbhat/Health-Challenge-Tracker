@@ -23,7 +23,12 @@ const TableData = () => {
         }
     };
 
-    // Filter by userName
+   
+
+    useEffect(() => {
+        let result = [...data];
+
+         // Filter by userName
     const applyNameFilter = (users) => {
         if (!searchText) return [];
         return users.filter(user =>
@@ -40,9 +45,6 @@ const TableData = () => {
             )
         );
     };
-
-    useEffect(() => {
-        let result = [...data];
 
         const filteredByName = applyNameFilter(result);
         const filteredByWorkout = applyWorkoutFilter(result);
